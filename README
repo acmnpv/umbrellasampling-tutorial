@@ -1,0 +1,22 @@
+This is the GROMACS Umbrella sampling tutorial for the BioExcel summer school.
+All files needed to perform the simulations and analyse the data can be found
+in the folder 0-files. The actual tutorial is performed through the jupyter notebook
+found in the main folder here.
+
+During the tutorial you will perform the setup for a number of small simulations
+to prepare Umbrella sampling on the intermolecular distance between two pyrimidine
+molecules in water. The result from the analysis of those simulations will be the
+potential of mean force for moving the molecules together.
+
+The input files and simulation setup are based on tutorials available from
+both Justin Lemkul (Link here please) and James W. Barnett (Link here as well).
+The information from those tutorials has been updated for the current GROMACS master
+branch and to use the different molecule.
+
+If you just want to get started with running the tutorial, start the jupyter notebook
+in the folder and let it guide you through the process.
+
+The underlying python scripts used to set up files and run several simulations can be
+found in the main folder under 1-python.
+
+Happy simulation! :)

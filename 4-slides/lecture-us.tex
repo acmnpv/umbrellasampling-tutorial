@@ -1,0 +1,345 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Uppsala Beamer theme example by Frédéric Haziza <daz@it.uu.se>
+%%
+%% Describing beamerthemeUppsala version 2008/05/15
+%%
+%% If you have more than three sections or more than three subsections in at least
+%% one section, you might want to use the [hideallsubsections] or
+%% [hideothersubsections] switch.  In this case, only the current (sub-) section is
+%% displayed in the sidebar and not the full overview.
+%%
+%% Options are:
+%% ===========
+%% * hideallsubsections, hideothersubsections
+%% * nonumbers,totalnumber
+%% * withnav, mylogo
+%% * grey
+%% * noprogressbar
+%%
+%% For the sidebar layout:
+%% * subsectionsattop, sectionpathattop
+%% 
+%% Removed
+%% =======
+%% * sidebarshades
+%%
+%% Tip
+%% ===
+%% latex this file to see the theme in action
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{beamer}
+%\documentclass[handout]{beamer}
+%\documentclass[notes]{beamer}
+%\documentclass[trans]{beamer}
+
+\usetheme[hideothersubsections,withnav]{Berkeley}
+
+\usepackage{hyperref}
+\usepackage{pgf}
+\usepackage{tikz}
+\usepgflibrary{arrows}
+\usepgflibrary{shapes}
+\usetikzlibrary{%
+  arrows,%
+  calc,%
+  fit,%
+  patterns,%
+  plotmarks,%
+  shapes.geometric,%
+  shapes.misc,%
+  shapes.symbols,%
+  shapes.arrows,%
+  shapes.callouts,%
+  shapes.multipart,%
+  shapes.gates.logic.US,%
+  shapes.gates.logic.IEC,%
+  er,%
+  automata,%
+  backgrounds,%
+  chains,%
+  topaths,%
+  trees,%
+  petri,%
+  mindmap,%
+  matrix,%
+  calendar,%
+  folding,%
+  fadings,%
+  through,%
+  positioning,%
+  scopes,%
+  decorations.fractals,%
+  decorations.shapes,%
+  decorations.text,%
+  decorations.pathmorphing,%
+  decorations.pathreplacing,%
+  decorations.footprints,%
+  decorations.markings,%
+  shadows}
+
+\usepackage[english]{babel} % or whatever
+\usepackage[utf8]{inputenc} % or whatever
+\usepackage{graphicx}
+%%\usepackage{caption}
+\usepackage[labelformat=empty]{caption}
+\usepackage[font=footnotesize]{subcaption}
+\setbeamerfont{caption}{size=\tiny}
+\setbeamerfont{frametitle}{size=\small}
+\usepackage{mathptmx}
+\usepackage{helvet}
+\usepackage{overcite}
+\usepackage{fixltx2e}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{tabularx}
+%\usepackage{courier}
+
+\usepackage[T1]{fontenc}
+\usepackage[num,UKenglish]{isodate}
+% Or whatever. Note that the encoding and the font should match. If T1
+% does not look nice, try deleting the line with the fontenc.
+
+%% -----------------------------------------------------------
+%% MISC. INFORMATION
+%% -----------------------------------------------------------
+\numberwithin{table}{section}
+\numberwithin{figure}{section}
+\numberwithin{equation}{section}
+
+\title{\emph{Umbrella sampling in GROMACS}}
+\subtitle{BioExcel Summer School 2018}
+
+\author[Paul Bauer]%| \emph{paul.bauer@icm.uu.se}] % appears in the footline
+{Paul Bauer <\texttt{paul.bauer@scilifelab.se}>}
+
+\institute[SciLifeLab, KTH] % appears in the footline
+{
+  SciLifeLab\\
+  KTH
+}
+
+\date[\footnotesize{\today}] % appears in the bottom of the sidebar
+{\today}
+
+%% \logo{...}
+
+%% This is only inserted into the PDF information catalog. Can be left out.
+\subject{BioExcel Summer School 2018}
+
+%% -----------------------------------------------------------
+%% Extra ``local'' settings
+%% -----------------------------------------------------------
+
+% Comment out this, if you do not want the table of contents to pop up at
+% the beginning of each (sub)section:
+% \AtBeginSection[]
+% {
+%   \begin{frame}<beamer> % with <beamer> => doesn't appear in handout mode
+%     \frametitle{Outline} %% Put the title you want, or none!
+%   %\tableofcontents[currentsection,currentsubsection]
+%     \tableofcontents[currentsection,hideallsubsections]
+%   \end{frame}
+% }
+
+%% Unfolds piecewise element with shading.
+%% Text appears, shaded, and the audience knows that somehting is coming
+%% Note: if you set the number too high, the audience will try to read the 
+%% text that now shows up more, and will be disturbed.
+%% ``dynamic'' makes elements show gradually more and more.
+\setbeamercovered{transparent=5}
+%% \setbeamercovered{dynamic=5}
+
+%% -----------------------------------------------------------
+
+\begin{document}
+
+\begin{frame}[plain] %% Gets the frame to fill up the page, no menu/sidebar/footline
+  \titlepage
+\end{frame}
+
+% \begin{frame}
+%     \frametitle{Outline}
+%     \tableofcontents[hideallsubsections]
+% \end{frame}
+
+
+\section{Basics of Umbrella Sampling (US)}
+
+\begin{frame}
+\frametitle{Sampling problems in Molecular Dynamics}
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[keepaspectratio=true, width=0.8\textwidth]{figures/system.pdf}
+        \caption{Example problem being studied by MD: Transport of a solute through a membrane channel.}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Covering of complete phase space is unrealistic}
+    \begin{itemize}
+        \item{Systems explore phase space according to boundary conditions given by the ensemble}
+        \item{Larger differences in energy between states make crossing less likely}
+        \item{Interesting changes often involve large changes in free energy and large free energy barriers}
+        \item{System needs to be forced to either cross barriers or ignore them}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Biasing potentials help crossing of free energy barriers}
+    \begin{itemize}
+        \item{Basic math behind use of Umbrella Sampling}
+        \item{
+                \begin{equation}
+                \end{equation}
+            }
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Example visualization of US windows}
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[keepaspectratio=true, width=0.8\textwidth]{figures/pyrimidine-us.pdf}
+        \caption{Moving two pyrimidine molecules through different US windows.}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ways to define US window coordinates}
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[keepaspectratio=true, width=0.8\textwidth]{figures/us-coord-define.pdf}
+        \caption{Different ways to define US window coordinates.}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Minimum requirements for converging simulation}
+    \begin{itemize}
+        \item{Each window needs to represent physical configuration}
+        \item{Windows need to have sufficient sampling overlap}
+        \item{No large changes between configurations that can't be sampled}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{How to generate initial configurations?}
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[keepaspectratio=true, width=0.8\textwidth]{figures/us-generate-conf.pdf}
+        \caption{How to generate different initial configurations for US}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Some application examples}
+    \begin{itemize}
+        \item{Calculation of dimerization energies}
+        \item{Clearly defined change within simulated structure}
+        \item{QM/MM for chemical reactions in enzyme systems}
+        \item{What can you think of?}
+    \end{itemize}
+\end{frame}
+
+\section{Umbrella sampling in GROMACS}
+
+\begin{frame}
+\frametitle{US basics and requirements}
+    \begin{itemize}
+        \item{All here based on reasonable recent version of GROMACS, tried on v2018}
+        \item{Examples and later tutorials based on [link here]}
+        \item{Need to understand pull code, index groups, (partially) WHAM}
+        \item{Topology setup and definition not covered}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Introduction to index groups}
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[keepaspectratio=true, width=0.8\textwidth]{figures/index-groups.pdf}
+        \caption{Examples for index groups}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Index group basics}
+    \begin{itemize}
+        \item{List of atoms being grouped together according to some requirement}
+        \item{Used to specify important parts of simulation for running/analysis/data processing}
+        \item{Defaults generate by all GROMACS tools internally}
+        \item{User defined groups available through either gmx make\_ndx or gmx select}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{How to generate index files with make\_ndx}
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[keepaspectratio=true, width=0.8\textwidth]{figures/demo.pdf}
+        \caption{Demo time!}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Setting up the simulation}
+    \begin{itemize}
+        \item{Define groups that should be restrainted by US windows}
+        \item{Define coordinates to be used for restraint}
+        \item{Set window spacing or generate initial configurations}
+        \item{Set US window restraint force constant}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Different kinds of coordinates and geometries}
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[keepaspectratio=true, width=0.8\textwidth]{figures/pull-coordinates.pdf}
+        \caption{Examples for pull or US coordinates in GROMACS}
+    \end{figure}
+\end{frame}
+
+\section{Data analysis with gmx wham}
+
+\begin{frame}
+\frametitle{Basics of US histogram analysis}
+    \begin{itemize}
+        \item{All information here based on [link]}
+        \item{Full disclosure: I'm not an expert in WHAM}
+        \item{More intendet as opening point to look for further information}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Math behind WHAM}
+\end{frame}
+
+\begin{frame}
+\frametitle{Analysing GROMACS US simulations}
+    \begin{itemize}
+        \item{Needs at least run input file and pullx or pullf file for each window}
+        \item{Will by default calculate both individual histograms and PMF}
+        \item{Able to also obtain autocorrelation times and error estimates}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Common pitfalls}
+    \begin{itemize}
+        \item{Insufficient sampling overlap}
+        \item{Bad choice of reaction coordinate}
+        \item{Bad choice of restraint parameters}
+        \item{Insufficient equilibration}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Thanks for your attention/patience}
+Questions? Comments? Suggestions?
+\end{frame}
+
+\end{document}
