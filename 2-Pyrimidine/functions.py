@@ -80,13 +80,15 @@ def which(program):
 
     return None
 
-def writemdpfile(position = 0, filename = "", kind = 0):
+def writemdpfile(position = 0, filename = "", kind = 0, group1name = "PYR1", group2name = "PYR2"):
     """Write the correct mdp file for a certain simulation and umbrella window.
 
     Args:
         position (real): Value for the sampling coordinate.
         filename (string): Name for the file written out.
-        kind (enum): What kind of mdp file to write; 
+        kind (enum): What kind of mdp file to write.
+        group1name (string): Name for the first group in COM pulling.
+        group2name (string): Name for second group in COM pulling.
                      0 - Minimzation
                      1 - Unrestrained minimization
                      2 - NVT equilibration
@@ -122,10 +124,10 @@ rvdw                     = 1.0
 DispCorr                 = EnerPres
 
 pull                     = yes
-pull-ngroups             = 2
-pull-group1-name         = PYR1
-pull-group2-name         = PYR2
-pull-ncoords             = 1
+pull-ngroups             = 2\n"""
+        line = line +"pull-group1-name         = "+str(group1name)
+        line = line +"\npull-group2-name         = "+str(group2name)+"\n"
+        line = line +"""pull-ncoords             = 1
 pull-coord1-type         = umbrella
 pull-coord1-geometry     = distance
 pull-coord1-groups       = 1 2
@@ -153,10 +155,10 @@ rvdw                     = 1.0
 DispCorr                 = EnerPres
 
 pull                     = yes
-pull-ngroups             = 2
-pull-group1-name         = PYR1
-pull-group2-name         = PYR2
-pull-ncoords             = 1
+pull-ngroups             = 2\n"""
+        line = line +"pull-group1-name         = "+str(group1name)
+        line = line +"\npull-group2-name         = "+str(group2name)+"\n"
+        line = line +"""pull-ncoords             = 1
 pull-coord1-type         = umbrella
 pull-coord1-geometry     = distance
 pull-coord1-groups       = 1 2
@@ -196,10 +198,10 @@ ref-t                    = 298.15
 nhchainlength            = 1
 
 pull                     = yes
-pull-ngroups             = 2
-pull-group1-name         = PYR1
-pull-group2-name         = PYR2
-pull-ncoords             = 1
+pull-ngroups             = 2\n"""
+        line = line +"pull-group1-name         = "+str(group1name)
+        line = line +"\npull-group2-name         = "+str(group2name)+"\n"
+        line = line +"""pull-ncoords             = 1
 pull-coord1-type         = umbrella
 pull-coord1-geometry     = distance
 pull-coord1-groups       = 1 2
@@ -244,10 +246,10 @@ compressibility          = 4.46e-5
 ref_p                    = 1.0 
 
 pull                     = yes
-pull-ngroups             = 2
-pull-group1-name         = PYR1
-pull-group2-name         = PYR2
-pull-ncoords             = 1
+pull-ngroups             = 2\n"""
+        line = line +"pull-group1-name         = "+str(group1name)
+        line = line +"\npull-group2-name         = "+str(group2name)+"\n"
+        line = line +"""pull-ncoords             = 1
 pull-coord1-type         = umbrella
 pull-coord1-geometry     = distance
 pull-coord1-groups       = 1 2
@@ -291,10 +293,10 @@ compressibility          = 4.46e-5
 ref_p                    = 1.0
 
 pull                     = yes
-pull-ngroups             = 2
-pull-group1-name         = PYR1
-pull-group2-name         = PYR2
-pull-ncoords             = 1
+pull-ngroups             = 2\n"""
+        line = line +"pull-group1-name         = "+str(group1name)
+        line = line +"\npull-group2-name         = "+str(group2name)+"\n"
+        line = line +"""pull-ncoords             = 1
 pull-coord1-type         = umbrella
 pull-coord1-geometry     = distance
 pull-coord1-groups       = 1 2
@@ -344,7 +346,7 @@ def rungrompp(mdpname = "", prevname = "", maxwarn = 0):
         commandlist.append(prevname)
     if (maxwarn > 0):
         commandlist.append("-maxwarn")
-        commandlist.append(maxwarn)
+        commandlist.append(str(maxwarn))
     subprocess.check_call(commandlist)
 
 def runmdrun(name = ""):
@@ -367,7 +369,7 @@ def runmdrun(name = ""):
 
 
 
-def umbrella(windows = 25, production = False, maxdist = 2.5, mindist = 0.05, filepath = "0-files"):
+def umbrella(windows = 25, production = False, maxdist = 2.5, mindist = 0.05, filepath = "0-files", group1name = "PYR1", group2name = "PYR2"):
     import os
     import shutil
     """Run the umbrella sampling simulations to obtain a free energy profile.
@@ -377,6 +379,9 @@ def umbrella(windows = 25, production = False, maxdist = 2.5, mindist = 0.05, fi
         production (boolean): run an actual prodcution simulation
         maxdist (real): maximum separation to reach, in Å
         mindist (real): minimum separation to start from, in Å
+        filepath (string): Path to input files for lookup.
+        group1name (string): Name for first COM pulling group.
+        group2name (string): Name for second COM pulling group.
     Returns:
         nothing
     """
@@ -398,23 +403,23 @@ def umbrella(windows = 25, production = False, maxdist = 2.5, mindist = 0.05, fi
         eqlname = "eql."+str(num)
         eql2name = "eql2."+str(num)
         prdname = "prd."+str(num)
-        writemdpfile(umbrellaposition, minname, 0)
+        writemdpfile(umbrellaposition, minname, 0, group1name, group2name)
         if (production):
             rungrompp(minname)
             runmdrun(minname)
-        writemdpfile(umbrellaposition, min2name, 1)
+        writemdpfile(umbrellaposition, min2name, 1, group1name, group2name)
         if (production):
             rungrompp(min2name, minname, 1)
             runmdrun(min2name)
-        writemdpfile(umbrellaposition, eqlname, 2)
+        writemdpfile(umbrellaposition, eqlname, 2, group1name, group2name)
         if (production):
             rungrompp(eqlname, min2name)
             runmdrun(eqlname)
-        writemdpfile(umbrellaposition, eql2name, 3)
+        writemdpfile(umbrellaposition, eql2name, 3, group1name, group2name)
         if (production):
             rungrompp(eql2name, eqlname)
             runmdrun(eql2name)
-        writemdpfile(umbrellaposition, prdname, 4)
+        writemdpfile(umbrellaposition, prdname, 4, group1name, group2name)
         if(production):
             rungrompp(prdname, eql2name)
             runmdrun(prdname)
