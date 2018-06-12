@@ -474,3 +474,16 @@ pyrimidine 2\n"""
     outfile.writelines(line)
     outfile.close()
 
+def listdirectory(dirname = "."):
+    """List files in the current directory
+
+    Args:
+        dirname (string): Name of the directory to check, default is current directory.
+    Returns:
+        nothing
+    """
+    import os
+
+    filelist = os.listdir(dirname)
+    for entry in filelist:
+        print (entry)
