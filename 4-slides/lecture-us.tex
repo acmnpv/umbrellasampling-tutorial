@@ -35,7 +35,7 @@
 %\documentclass[notes]{beamer}
 %\documentclass[trans]{beamer}
 
-\usetheme[hideothersubsections,withnav]{Berkeley}
+\usetheme[hideothersubsections,withnav]{BioExcel}
 
 \usepackage{hyperref}
 \usepackage{pgf}
@@ -92,7 +92,6 @@
 \usepackage{helvet}
 \usepackage{overcite}
 \usepackage{fixltx2e}
-\usepackage{hyperref}
 \usepackage{multirow}
 \usepackage{tabularx}
 %\usepackage{courier}
@@ -154,16 +153,18 @@
 
 %% -----------------------------------------------------------
 
+\renewcommand{\vec}[1]{\mathbf{#1}}
+
 \begin{document}
 
 \begin{frame}[plain] %% Gets the frame to fill up the page, no menu/sidebar/footline
   \titlepage
 \end{frame}
 
-% \begin{frame}
-%     \frametitle{Outline}
-%     \tableofcontents[hideallsubsections]
-% \end{frame}
+\begin{frame}
+    \frametitle{Outline}
+    \tableofcontents[hideallsubsections]
+\end{frame}
 
 
 \section{Basics of Umbrella Sampling (US)}
@@ -172,7 +173,7 @@
 \frametitle{Sampling problems in Molecular Dynamics}
     \begin{figure}[htb]
         \centering
-        \includegraphics[keepaspectratio=true, width=0.8\textwidth]{figures/system.pdf}
+        \includegraphics[keepaspectratio=true, width=0.8\textwidth]{figures/system.png}
         \caption{Example problem being studied by MD: Transport of a solute through a membrane channel.}
     \end{figure}
 \end{frame}
@@ -189,20 +190,21 @@
 
 \begin{frame}
 \frametitle{Biasing potentials help crossing of free energy barriers}
-    \begin{itemize}
-        \item{Basic math behind use of Umbrella Sampling}
-        \item{
-                \begin{equation}
-                \end{equation}
-            }
-    \end{itemize}
+        {Basic math behind use of Umbrella Sampling}
+        {
+                \begin{eqnarray*}
+                    U_{\text{window}}\left( \vec{r} \right) &=& U\left( \vec{r}\right) + W\left( \vec{r}_{\text{rest}} \right) \\
+                    W\left( \vec{r}_{\text{rest}} \right) &=& k\left( \vec{r} - \vec{r}_{ref} \right)^2
+                \end{eqnarray*}
+        }
+        {System is moved through several windows with different references coordinates.}
 \end{frame}
 
 \begin{frame}
 \frametitle{Example visualization of US windows}
     \begin{figure}[htb]
         \centering
-        \includegraphics[keepaspectratio=true, width=0.8\textwidth]{figures/pyrimidine-us.pdf}
+        \includegraphics[keepaspectratio=true, width=0.8\textwidth]{figures/pyrimidine-us.png}
         \caption{Moving two pyrimidine molecules through different US windows.}
     \end{figure}
 \end{frame}
@@ -227,11 +229,17 @@
 
 \begin{frame}
 \frametitle{How to generate initial configurations?}
-    \begin{figure}[htb]
-        \centering
-        \includegraphics[keepaspectratio=true, width=0.8\textwidth]{figures/us-generate-conf.pdf}
-        \caption{How to generate different initial configurations for US}
-    \end{figure}
+    \begin{itemize}
+        \item{Manual placement of initial configurations}
+        \item{Molecular dynamics with constant potential}
+        \item{Simulation with restraints}
+        \item{QM calculations}
+    \end{itemize}
+%%    \begin{figure}[htb]
+%%        \centering
+%%        \includegraphics[keepaspectratio=true, width=0.8\textwidth]{figures/us-generate-conf.pdf}
+%%        \caption{How to generate different initial configurations for US}
+%%    \end{figure}
 \end{frame}
 
 \begin{frame}
@@ -250,7 +258,7 @@
 \frametitle{US basics and requirements}
     \begin{itemize}
         \item{All here based on reasonable recent version of GROMACS, tried on v2018}
-        \item{Examples and later tutorials based on [link here]}
+        \item{Examples and later tutorials based on \url{https://barnett.science/tutorials/5_umbrella/}}
         \item{Need to understand pull code, index groups, (partially) WHAM}
         \item{Topology setup and definition not covered}
     \end{itemize}
@@ -296,10 +304,15 @@
 
 \begin{frame}
 \frametitle{Different kinds of coordinates and geometries}
+    \begin{itemize}
+        \item{Linear distance}
+        \item{Directional or based on reference}
+        \item{Cylinder pulling}
+    \end{itemize}
     \begin{figure}[htb]
         \centering
         \includegraphics[keepaspectratio=true, width=0.8\textwidth]{figures/pull-coordinates.pdf}
-        \caption{Examples for pull or US coordinates in GROMACS}
+        \caption{Examples for pull or US coordinates in GROMACS from reference manual}
     \end{figure}
 \end{frame}
 
@@ -308,7 +321,7 @@
 \begin{frame}
 \frametitle{Basics of US histogram analysis}
     \begin{itemize}
-        \item{All information here based on [link]}
+        \item{All information here based on \url{http://doi.org/10.1002/jcc.540130812}}
         \item{Full disclosure: I'm not an expert in WHAM}
         \item{More intendet as opening point to look for further information}
     \end{itemize}
@@ -316,6 +329,14 @@
 
 \begin{frame}
 \frametitle{Math behind WHAM}
+
+    \begin{eqnarray*}
+        P_{\{\lambda\}j,{\beta}_{j}} \left(\{V\}, \zeta \right) =&
+        \frac{\sum_{k=1}^{R} N_{k}\left( \{V\}, \zeta\right) \exp{ \left(-{\beta}\sum_{j=0}^{L} {\lambda}_{j}V_{j} \right)}}{\sum_{m=1}^{R} n_{m} \exp{ \left( f_{m} -{\beta}_{m} \sum_{j=0}^{L} {\lambda}_{j,m} V_{j} \right)}} \\\\
+        \exp{\left(-f_{i}\right)} =& \sum_{\{V\}, \zeta} P_{\{\lambda\}j,{\beta}_{j}} \left(\{V\}, \zeta \right) \\\\
+        \exp{\left(-f_{i}\right)} =& 
+        \sum_{k=1}^{R} \sum_{t=1}^{n_{k}} \frac{\exp{\left[ -{\beta}_{i} \sum_{j=0}^{L} {\lambda}_{j,i} V_{j,t}^{(k)}\right]}}{\sum_{m=1}^{R} n_{m} \exp{\left[ f_{m} -{\beta}_{m} \sum_{j=0}^{L} {\lambda}_{j,m} V_{j,t}^{k} \right]}}
+    \end{eqnarray*}
 \end{frame}
 
 \begin{frame}
@@ -325,6 +346,15 @@
         \item{Will by default calculate both individual histograms and PMF}
         \item{Able to also obtain autocorrelation times and error estimates}
     \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Example analysis from simple US simulation}
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[keepaspectratio=true, width=\textwidth]{figures/histoprofile.pdf}
+        \caption{Well coverged and overlapping US simulation}
+    \end{figure}
 \end{frame}
 
 \begin{frame}
@@ -339,7 +369,11 @@
 
 \begin{frame}
 \frametitle{Thanks for your attention/patience}
-Questions? Comments? Suggestions?
+    \begin{itemize}
+        \item{Questions?}
+        \item{Comments?}
+        \item{Suggestions?}
+    \end{itemize}
 \end{frame}
 
 \end{document}

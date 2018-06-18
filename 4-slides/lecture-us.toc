@@ -1,5 +1,0 @@
-\babel@toc {english}{}
-\babel@toc {english}{}
-\beamer@sectionintoc {1}{Basics of Umbrella Sampling (US)}{2}{0}{1}
-\beamer@sectionintoc {2}{Umbrella sampling in GROMACS}{10}{0}{2}
-\beamer@sectionintoc {3}{Data analysis with gmx wham}{16}{0}{3}
