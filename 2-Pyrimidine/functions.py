@@ -50,7 +50,7 @@ def backup(dirname):
             backup_dirname = "#%s.%d#" % (sd,i)
             i += 1
             if i > 10:
-                print "You have more than 100 backed up files... "
+                print("You have more than 100 backed up files... ")
         shutil.move(dirname, backup_dirname)
         return backup_dirname
     
@@ -98,7 +98,7 @@ def writemdpfile(position = 0, filename = "", kind = 0, group1name = "PYR1", gro
         Nothing
     """
     if (filename == ""):
-        print "Not a valid filename, we are out of here"
+        print("Not a valid filename, we are out of here")
         return None
 
     if kind == 0:
@@ -106,7 +106,7 @@ def writemdpfile(position = 0, filename = "", kind = 0, group1name = "PYR1", gro
 define                   = -DFLEXIBLE
 integrator               = steep
 nsteps                   = 1000
-emtol                    = 100
+emtol                    = 500
 nstenergy                = 500
 nstlog                   = 500
 nstxout-compressed       = 1000
@@ -305,7 +305,7 @@ pull-coord1-rate         = 0.0\n"""
         line = line + "pull-coord1-init         = "+str(position)
         line = line + "\npull-coord1-start        = no"
     else:
-        print "Unrecognized type for file writeout, doing nothing"
+        print("Unrecognized type for file writeout, doing nothing")
         return None
     filename = filename+".mdp"
     outfile = open(filename, "w")
@@ -325,7 +325,7 @@ def rungrompp(mdpname = "", prevname = "", maxwarn = 0):
         nothing
     """
     if (mdpname == ""):
-        print "The name for the mdpfile can not be empty"
+        print("The name for the mdpfile can not be empty")
         return None
 
     commandlist = ["gmx", "grompp", "-n", "index.ndx", "-p", "topol.top"]
@@ -358,7 +358,7 @@ def runmdrun(name = ""):
         nothing
     """
     import subprocess
-    commandlist = ["gmx", "mdrun", "-deffnm" ]
+    commandlist = ["gmx", "mdrun", "-deffnm" , "-v"]
     commandlist.append(name)
     commandlist.append("-pf")
     commandlist.append("pullf-"+name)
